@@ -1,17 +1,16 @@
 package PlanMyTrip.velocity;
 
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
-
 import PlanMyTrip.action.AActionCredential;
 import PlanMyTrip.error.JwfErrorHandler;
-
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.esgi.web.framework.context.interfaces.IContext;
+
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ActionVelocityTest extends AActionCredential {
 
@@ -27,6 +26,7 @@ public class ActionVelocityTest extends AActionCredential {
         ve.init();
 		
 		VelocityContext vcontext = new VelocityContext();
+
 		List<String> cities = new ArrayList<String>();
 		cities.add("paris");
 		cities.add("londres");

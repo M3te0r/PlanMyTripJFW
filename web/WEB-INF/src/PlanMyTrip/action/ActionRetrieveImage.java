@@ -60,11 +60,8 @@ public class ActionRetrieveImage implements IAction {
                     }catch (IOException io)
                     {
                         JwfErrorHandler.displayError(iContext, 404, "Could not find image");
-
                     }
-
                 }
-
             }
 
     }

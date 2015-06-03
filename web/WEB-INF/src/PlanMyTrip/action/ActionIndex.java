@@ -46,11 +46,16 @@ public class ActionIndex implements IAction {
         VelocityEngine ve = new VelocityEngine();
         ve.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, context._getRequest().getServletContext().getRealPath("/").replace("\\", "/") + "WEB-INF/templates");
         ve.init();
-        VelocityContext chapterContext = new VelocityContext();
+        VelocityContext indexContext = new VelocityContext();
+//        indexContext.put("userId", 12);
+//        indexContext.put("userPseudo", "Mathieu");
 
         Template  t = ve.getTemplate("index.vm");
+
+
         StringWriter writer = new StringWriter();
-        t.merge(chapterContext, writer);
+        t.merge(indexContext, writer);
+
 
         try {
             context._getResponse().getWriter().write(writer.toString());
