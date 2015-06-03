@@ -33,7 +33,7 @@ public class FrontController extends HttpServlet implements IFrontController {
 		rewriter.addRule(new RewriteRule(URIroot + "/img/([a-zA-Z]+.((jpe?g)|(png)))", "GET|POST", "PlanMyTrip.action.ActionRetrieveImage"));
 		rewriter.addRule(new RewriteRule(URIroot  + "/js/(.*\\.(js))", "GET|POST", "PlanMyTrip.action.ActionRetrieveJavascript"));
 		rewriter.addRule(new RewriteRule(URIroot + "/js/vendor/(.*\\.(js))", "GET|POST", "PlanMyTrip.action.ActionRetrieveJavascript"));
-		rewriter.addRule(new RewriteRule(URIroot + "/(index.html)?", "GET|POST", "PlanMyTrip.action.ActionIndex"));
+		rewriter.addRule(new RewriteRule(URIroot + "(\\/.?(index.html)?$)", "GET|POST", "PlanMyTrip.action.ActionIndex"));
 		rewriter.addRule(new RewriteRule(URIroot + "/pages/(.*\\.(html))", "GET|POST", "PlanMyTrip.action.ActionRetrievePage"));
 	}
 
