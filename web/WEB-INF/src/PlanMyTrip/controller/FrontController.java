@@ -28,21 +28,13 @@ public class FrontController extends HttpServlet implements IFrontController {
 	public void init() {
 		rewriter = new Rewriter();
 		dispatcher = new Dispatcher();
-
-		// == Velocity test
-		// Login form
-		rewriter.addRule(new RewriteRule(URIroot + "/velocity", "GET|POST", "PlanMyTrip.velocity.ActionVelocityTest"));
-		// == Velocity test
 		rewriter.addRule(new RewriteRule(URIroot + "/css/[a-zA-Z]*.css", "GET|POST", "PlanMyTrip.action.ActionStyle"));
-
 		rewriter.addRule(new RewriteRule(URIroot + "/font/([a-zA-Z]+.((otf)|(ttf)))", "GET|POST", "PlanMyTrip.action.ActionRetrieveFont"));
-
 		rewriter.addRule(new RewriteRule(URIroot + "/img/([a-zA-Z]+.((jpe?g)|(png)))", "GET|POST", "PlanMyTrip.action.ActionRetrieveImage"));
-
 		rewriter.addRule(new RewriteRule(URIroot  + "/js/(.*\\.(js))", "GET|POST", "PlanMyTrip.action.ActionRetrieveJavascript"));
 		rewriter.addRule(new RewriteRule(URIroot + "/js/vendor/(.*\\.(js))", "GET|POST", "PlanMyTrip.action.ActionRetrieveJavascript"));
-
-		
+		rewriter.addRule(new RewriteRule(URIroot + "/(index.html)?", "GET|POST", "PlanMyTrip.action.ActionIndex"));
+		rewriter.addRule(new RewriteRule(URIroot + "/pages/(.*\\.(html))", "GET|POST", "PlanMyTrip.action.ActionRetrievePage"));
 	}
 
 	@Override

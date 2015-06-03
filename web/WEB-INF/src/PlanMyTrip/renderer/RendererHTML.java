@@ -1,10 +1,10 @@
 package PlanMyTrip.renderer;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
-
 import org.esgi.web.framework.context.interfaces.IContext;
 import org.esgi.web.framework.renderer.interfaces.IRenderer;
+
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 
 public class RendererHTML implements IRenderer {
 

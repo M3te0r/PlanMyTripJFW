@@ -1,0 +1,11 @@
+<div id="footer">
+    <div id="footerLinks">
+        <a href="#">Qui sommes-nous</a>
+        <a href="./PlanMyTrip/pages/legal.html">Mentions légales</a>
+        <a href="#">Contact</a>
+    </div>
+    <br>
+    <div id="copyrights">
+        <h6 style="font-weight:normal;">copyrights (c) 2014 PlanMyTrip dev Team</h6>
+    </div>
+</div>

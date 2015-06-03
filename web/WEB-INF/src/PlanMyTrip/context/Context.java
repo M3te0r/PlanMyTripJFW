@@ -249,10 +249,10 @@ public class Context implements IContext {
 	public String[] getUserCredentials() {
 		return (String[]) getSessionAttribute("user-cr");
 	}
-	
+
 	/**
 	 * Get the renderer type.
-	 * 
+	 *
 	 * @return The renderer type.
 	 */
 	public RendererTypes getRendererType() {
