@@ -1,6 +1,5 @@
 package PlanMyTrip.controller;
 
-import PlanMyTrip.action.AActionCredential;
 import PlanMyTrip.context.Context;
 import PlanMyTrip.error.JwfErrorHandler;
 import PlanMyTrip.router.Dispatcher;
@@ -54,12 +53,7 @@ public class FrontController extends HttpServlet implements IFrontController {
 			rewriter.rewrite(c = new Context(request, response));
 			
 			if(checkClass(c)) {
-//				if(checkRights(c)) {
 				dispatcher.dispatch(c);
-//				} else {
-//					// 403
-//					JwfErrorHandler.displayError(c, 403, "you doesn't have the rights to view this page");
-//				}
 			} else {
 				// 404
 				JwfErrorHandler.displayError(c, 404, "the page doesn't exist");
@@ -74,11 +68,6 @@ public class FrontController extends HttpServlet implements IFrontController {
 	
 	private boolean checkClass(Context c) {
 		return c.getActionClass() != null && c.getActionClass().length() > 0;
-	}
-	
-	private boolean checkRights(Context c) throws Exception {
-		String[] credentialsNeeded = (String[]) Class.forName(c.getActionClass()).getMethod("getCredentials", null).invoke(null, null);
-		return AActionCredential.hasCredential(credentialsNeeded, c.getUserCredentials());
 	}
 	
 }
