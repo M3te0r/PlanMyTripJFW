@@ -51,8 +51,7 @@ public class ActionIndex implements IAction {
 //        indexContext.put("userPseudo", "Mathieu");
 
         Template  t = ve.getTemplate("index.vm");
-
-
+        indexContext.put("depth", 1);
         StringWriter writer = new StringWriter();
         t.merge(indexContext, writer);
 

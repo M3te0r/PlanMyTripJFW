@@ -3,6 +3,7 @@
 
 #parse("pages/topbar.vm")
 ##<?php
+
 ##session_start();
 ##try{
 ##    $pdo_options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
@@ -16,7 +17,7 @@
 <div id="content">
     <div id="textPres">Laissez-vous guider..!</div>
     <div id="search">
-        <form action="search/index.html?">
+        <form action="pages/search/index.html?">
             <span style="font-size:25px;text-shadow:0px 0px 2px #999999;">Je recherche un guide pour :</span><br>
             <input type="hidden" name="duration" value="n">
             <input type=text class="searchBar" name="search" placeholder=" Entrez le nom d'une ville" autocomplete="off">

@@ -34,8 +34,11 @@ public class FrontController extends HttpServlet implements IFrontController {
 		rewriter.addRule(new RewriteRule(URIroot  + "/js/(.*\\.(js))", "GET|POST", "PlanMyTrip.action.ActionRetrieveJavascript"));
 		rewriter.addRule(new RewriteRule(URIroot + "/js/vendor/(.*\\.(js))", "GET|POST", "PlanMyTrip.action.ActionRetrieveJavascript"));
 		rewriter.addRule(new RewriteRule(URIroot + "$", "GET|POST", "PlanMyTrip.action.ActionIndex"));
-		rewriter.addRule(new RewriteRule(URIroot + "(\\/.?(index.html)?$)", "GET|POST", "PlanMyTrip.action.ActionIndex"));
-		rewriter.addRule(new RewriteRule(URIroot + "/pages/(.*\\.(html))", "GET|POST", "PlanMyTrip.action.ActionRetrievePage"));
+//		rewriter.addRule(new RewriteRule(URIroot + "(\\/.?(index.html))", "GET|POST", "PlanMyTrip.action.ActionIndex"));
+		rewriter.addRule(new RewriteRule(URIroot + "/index.html", "GET|POST", "PlanMyTrip.action.ActionIndex"));
+		rewriter.addRule(new RewriteRule(URIroot + "/pages/search/index.html", "GET|POST", "PlanMyTrip.action.ActionSearchGuide"));
+		rewriter.addRule(new RewriteRule(URIroot + "/pages/(.*)", "GET|POST", "PlanMyTrip.action.ActionRetrievePage"));
+//		rewriter.addRule(new RewriteRule(URIroot + "/pages/(.*\\.(html))", "GET|POST", "PlanMyTrip.action.ActionRetrievePage"));
 	}
 
 	@Override
