@@ -30,18 +30,15 @@ public class FrontController extends HttpServlet implements IFrontController {
 		dispatcher = new Dispatcher();
 		rewriter.addRule(new RewriteRule(URIroot + "/css/(.*\\.(css))", "GET|POST", "PlanMyTrip.action.ActionStyle"));
 		rewriter.addRule(new RewriteRule(URIroot + "/font/(.*\\.((otf)|(ttf)))", "GET|POST", "PlanMyTrip.action.ActionRetrieveFont"));
-		rewriter.addRule(new RewriteRule(URIroot + "/img/(.*\\.((jpe?g)|(png)))", "GET|POST", "PlanMyTrip.action.ActionRetrieveImage"));
+		rewriter.addRule(new RewriteRule(URIroot + "/img/(.*\\.((jpe?g)|(png)|(gif)))", "GET|POST", "PlanMyTrip.action.ActionRetrieveImage"));
 		rewriter.addRule(new RewriteRule(URIroot  + "/js/(.*\\.(js))", "GET|POST", "PlanMyTrip.action.ActionRetrieveJavascript"));
-		rewriter.addRule(new RewriteRule(URIroot + "/js/vendor/(.*\\.(js))", "GET|POST", "PlanMyTrip.action.ActionRetrieveJavascript"));
 		rewriter.addRule(new RewriteRule(URIroot + "$", "GET|POST", "PlanMyTrip.action.ActionIndex"));
-//		rewriter.addRule(new RewriteRule(URIroot + "(\\/.?(index.html))", "GET|POST", "PlanMyTrip.action.ActionIndex"));
+		rewriter.addRule(new RewriteRule(URIroot + "/$", "GET|POST", "PlanMyTrip.action.ActionIndex"));
 		rewriter.addRule(new RewriteRule(URIroot + "/index.html", "GET|POST", "PlanMyTrip.action.ActionIndex"));
 		rewriter.addRule(new RewriteRule(URIroot + "/pages/search/index.html", "GET|POST", "PlanMyTrip.action.ActionSearchGuide"));
 		rewriter.addRule(new RewriteRule(URIroot + "/pages/guide/index.html", "GET|POST", "PlanMyTrip.action.ActionGuide"));
-//		rewriter.addRule(new RewriteRule(URIroot + "/pages/(.*)", "GET|POST", "PlanMyTrip.action.ActionRetrievePage"));
 		rewriter.addRule(new RewriteRule(URIroot + "/pages/loger/login.html", "GET|POST", "PlanMyTrip.action.ActionUserLogin"));
 		rewriter.addRule(new RewriteRule(URIroot + "/pages/loger/logout.html", "GET|POST", "PlanMyTrip.action.ActionUserLogout"));
-//		rewriter.addRule(new RewriteRule(URIroot + "/pages/(.*\\.(html))", "GET|POST", "PlanMyTrip.action.ActionRetrievePage"));
 		rewriter.addRule(new RewriteRule(URIroot + "/pages/registration/index.html", "GET|POST", "PlanMyTrip.action.ActionUserRegistrationIndex"));
 		rewriter.addRule(new RewriteRule(URIroot + "/pages/registration/registration.html", "GET|POST", "PlanMyTrip.action.ActionUserRegistration"));
 	}
