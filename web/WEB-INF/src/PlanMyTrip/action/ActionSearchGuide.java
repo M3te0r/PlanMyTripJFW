@@ -68,6 +68,8 @@ public class ActionSearchGuide implements IAction {
         ve.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, context._getRequest().getServletContext().getRealPath("/").replace("\\", "/") + "WEB-INF/templates/pages");
         ve.init();
         VelocityContext pageContext = new VelocityContext();
+        pageContext.put("userId", context.getSessionAttribute("user-id"));
+        pageContext.put("userPseudo", context.getSessionAttribute("user-pseudo"));
         String search = ((Context) context ).getParameterUnique("search");
         String duration = ((Context) context).getParameterUnique("duration");
         pageContext.put("s", search);

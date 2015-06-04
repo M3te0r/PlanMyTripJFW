@@ -1,3 +1,5 @@
+#set($userIdRef = $userId)
+#set($userPseudoRef = $userPseudo)
 #parse("topbar.vm")
 ##<?php
 ##session_start();

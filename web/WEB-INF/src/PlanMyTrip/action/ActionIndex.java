@@ -47,9 +47,9 @@ public class ActionIndex implements IAction {
         ve.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, context._getRequest().getServletContext().getRealPath("/").replace("\\", "/") + "WEB-INF/templates");
         ve.init();
         VelocityContext indexContext = new VelocityContext();
-
+        indexContext.put("userId", context.getSessionAttribute("user-id"));
+        indexContext.put("userPseudo", context.getSessionAttribute("user-pseudo"));
         Template  t = ve.getTemplate("index.vm");
-        indexContext.put("depth", 1);
         StringWriter writer = new StringWriter();
         t.merge(indexContext, writer);
 
