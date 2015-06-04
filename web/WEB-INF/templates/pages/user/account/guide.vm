@@ -1,0 +1,36 @@
+#set($userIdRef = $userId)
+#set($userPseudoRef = $userPseudo)
+<style>
+	html{
+		font-family: "Myriad-Pro";
+	}
+</style>
+<html>
+<link rel="stylesheet" type="text/css" href="../../../css/main.css">
+<div id="userGuide">
+<table>
+	<thead>
+	<tr>
+		<th style="width:100px">Pays</th> <th style="width:100px">Ville</th> <th style="width:50px">Durée</th> <th style="width:180px">Nom du guide</th> <th style="width:80px">Date</th> <th>Etat</th>
+	</tr>
+	</thead>
+	<tbody>
+	#set($userGuides = $SQL.getUserGuidesInfos($userIdRef))
+	#foreach($guide in $userGuides)
+
+	<tr>
+		<td>$guide[3]</td> <td>$guide[4]</td> <td>$guide[6]</td>
+		<td><a target="_parent" href="/PlanMyTrip/pages/guide/index.html?Id_Guide=$guide[0]">$guide[1]</a></td> <td>$guide[5]</td> <td>
+		#if($guide[7] == 1)
+			<img src='../../../img/conf.png'/>
+		#else
+			echo "<img src='../../../img/unconf.png'/>
+		#end
+
+		</td>
+	</tr>
+#end
+	</tbody>
+</table>
+</div>
+		

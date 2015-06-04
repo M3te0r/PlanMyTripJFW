@@ -42,6 +42,7 @@ public class FrontController extends HttpServlet implements IFrontController {
 		rewriter.addRule(new RewriteRule(URIroot + "/pages/registration/registration.html", "GET|POST", "PlanMyTrip.action.ActionUserRegistration"));
 		rewriter.addRule(new RewriteRule(URIroot + "/pages/user/account/index.html", "GET|POST", "PlanMyTrip.action.ActionUserAccountIndex"));
 		rewriter.addRule(new RewriteRule(URIroot + "/pages/user/account/script.js", "GET|POST", "PlanMyTrip.action.ActionUserAccountJavascript"));
+		rewriter.addRule(new RewriteRule(URIroot + "/pages/user/account/guide.html", "GET|POST", "PlanMyTrip.action.ActionUserGuides"));
 	}
 
 	@Override
