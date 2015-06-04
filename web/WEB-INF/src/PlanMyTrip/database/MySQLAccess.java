@@ -128,6 +128,25 @@ public class MySQLAccess {
         return statement.executeQuery();
     }
 
+    public static List getUserByLoginAndPassword(String login, String password) throws SQLException
+    {
+        PreparedStatement statement = getInstance().connection.prepareStatement("SELECT Id_User,Pseudo, Password, IsValidate FROM user " +
+                " WHERE Pseudo = ? AND Password = ?");
+        statement.setString(1, login);
+        statement.setString(2, password);
+        List<Object> userList = new ArrayList<>(4);
+        ResultSet resultSet = statement.executeQuery();
+        while(resultSet.next())
+        {
+            userList.add(resultSet.getInt("Id_User"));
+            userList.add(resultSet.getString("Pseudo"));
+            userList.add(resultSet.getString("Password"));
+            userList.add(resultSet.getInt("IsValidate"));
+        }
+        return userList;
+
+    }
+
     public static List getGuideById(int idGuide) throws SQLException
     {
         PreparedStatement statement = getInstance().connection.prepareStatement("SELECT * FROM guide " +

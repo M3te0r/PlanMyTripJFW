@@ -44,7 +44,7 @@
                     <a href="/PlanMyTrip/pages/loger/logout.php" style="color:red;padding-left:5px;"> Deconnexion </a>
                 </div>
             #else
-                <form method=post  style="float: right;margin-right: 10px;" action="/PlanMyTrip/pages/loger/login.php">
+                <form method=post  style="float: right;margin-right: 10px;" action="/PlanMyTrip/pages/loger/login.html">
                     <input type=text class="loginName" name="pseudo" placeholder=" Pseudo">
                     <input type=password class="loginPassword" name="password" placeholder=" Mot de Passe">
                     <input type="submit" class="go" value="login" name="loginEnt">
