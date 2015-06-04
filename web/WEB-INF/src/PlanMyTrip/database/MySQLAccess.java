@@ -171,6 +171,19 @@ public class MySQLAccess {
         return result;
     }
 
+    public static void registerUser(String realname, String pseudo, String mail, String password) throws SQLException
+    {
+        PreparedStatement statement = getInstance().connection.prepareStatement("INSERT INTO User(FullName, Pseudo, Mail, Password, ValidateKey, IsValidate) VALUES(?,?,?,?,?,?)");
+        statement.setString(1, realname);
+        statement.setString(2, pseudo);
+        statement.setString(3, mail);
+        statement.setString(4, password);
+        statement.setString(5, "");
+        statement.setInt(6, 1);
+        statement.executeUpdate();
+
+    }
+
     public static ResultSet hasUserVoted(int idGuide, int idUser) throws SQLException
     {
         PreparedStatement statement = getInstance().connection.prepareStatement("SELECT hasVoted FROM votesByUser WHERE idGuide= ? AND idUser= ?");

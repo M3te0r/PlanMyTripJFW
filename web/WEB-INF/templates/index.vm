@@ -27,7 +27,7 @@
     </div>
     #if(!$userIdRef && !$userPseudoRef)
         <div id  ="signup">
-            <a href="pages/registration/">Inscrivez-vous!</a>
+            <a href="pages/registration/index.html">Inscrivez-vous!</a>
         </div>
     #else
         <div id="propose">
