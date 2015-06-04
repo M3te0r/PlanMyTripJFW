@@ -69,6 +69,10 @@ public class ActionGuide implements IAction {
         VelocityContext pageContext = new VelocityContext();
         int id_guide = Integer.parseInt(((Context) context).getParameterUnique("Id_Guide"));
         pageContext.put("Id_Guide", id_guide);
+        String search = ((Context) context ).getParameterUnique("search");
+        String duration = ((Context) context).getParameterUnique("duration");
+        pageContext.put("s", search);
+        pageContext.put("d", duration);
 
         pageContext.put("SQL", new MySQLAccess());
         Template t = ve.getTemplate("/guide/index.vm");

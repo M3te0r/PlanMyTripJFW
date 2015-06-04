@@ -52,8 +52,6 @@ public class ActionIndex implements IAction {
         Template  t = ve.getTemplate("index.vm");
         StringWriter writer = new StringWriter();
         t.merge(indexContext, writer);
-
-
         try {
             context._getResponse().getWriter().write(writer.toString());
         } catch (IOException e) {
