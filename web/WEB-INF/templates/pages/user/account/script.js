@@ -31,7 +31,7 @@ html.Menu.prototype.init = function() {
 }
 
 html.Form = function(global, sub, items, bool){
-	this.global = global,
+	this.global = global;
 	this.sub = sub;
 	this.items = items;
 	
@@ -55,7 +55,7 @@ html.Form.prototype.init = function(){
 			me.table.append('<tr><td style="width:180px;">'+item.label+' </td><td><input id="'+item.id+'" onclick="'+item.click+'" type="'+item.type+'" placeholder="'+item.placeholder+'" name="'+item.name+'" class="'+item.cls+'" '+item.required+ 'value="'+savevalue+'" /></td></tr>');
 			$(item).addClass('form_element');
 		});
-}
+};
 
 
 
