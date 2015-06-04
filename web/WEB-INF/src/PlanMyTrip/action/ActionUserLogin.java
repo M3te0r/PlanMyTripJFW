@@ -62,6 +62,7 @@ public class ActionUserLogin implements IAction {
 
     @Override
     public void proceed(IContext context) {
+
         String login = ((Context)context).getParameterUnique("pseudo");
         String pass  = ((Context)context).getParameterUnique("password");
         context._getResponse().setContentType("text/html");
@@ -76,14 +77,17 @@ public class ActionUserLogin implements IAction {
             if (userInfo != null) {
                 if(!userInfo.isEmpty()) {
 
+
                     // Save session
                     context.setSessionAttribute("user-id", userInfo.get(0));
                     context.setSessionAttribute("user-pseudo", userInfo.get(1));
+
 
                     // Display message
                     try {
                         context.setAttribute("model", new JwfMessage("Connected with user " + login));
                         context._getResponse().getWriter().write(new Renderer().render(context));
+                        context._getResponse().sendRedirect(context._getRequest().getHeader("referer"));
                     } catch (IOException e) {
                         JwfErrorHandler.displayError(context, 500, "error while writting response : " + e.getMessage());
                         e.printStackTrace();
@@ -91,6 +95,12 @@ public class ActionUserLogin implements IAction {
 
                 } else
                     JwfErrorHandler.displayError(context, 403, "no user with the login/password provided");
+                try {
+                    context._getResponse().sendRedirect(context._getRequest().getHeader("referer"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
         }
     }
