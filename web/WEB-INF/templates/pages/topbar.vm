@@ -41,7 +41,7 @@
             #if($userIdRef && $userPseudoRef)
                 <div id="loged">
                     <span id="nameLoged">Bonjour $userPseudoRef<span class="account"> <a href="user/account/index.php">Mon compte <img style="margin-left:10px;width:15px;height:15px;margin-top:-5px;" src="./img/iconmonstr-user-6-icon-24.png"></span></a></span>
-                    <a href="/PlanMyTrip/pages/loger/logout.php" style="color:red;padding-left:5px;"> Deconnexion </a>
+                    <a href="/PlanMyTrip/pages/loger/logout.html" style="color:red;padding-left:5px;"> Deconnexion </a>
                 </div>
             #else
                 <form method=post  style="float: right;margin-right: 10px;" action="/PlanMyTrip/pages/loger/login.html">
