@@ -49,7 +49,7 @@ try{
                 <tr class="result">
                     <td>
                         <div class="resultInfo">
-                            <div class="resultName"><a href="../pages/guide/index.php?Id_Guide=<?php echo $item['Id_Guide'] ?>"><?php echo $item['Ville'].", ".$item['Pays']." : " ?><span style="font-style:italic;color:#8C8C8C;font-size:20px;"><?php echo $item['Titre'] ?><span></a></div>
+                            <div class="resultName"><a href="../pages/guide/index.html?Id_Guide=<?php echo $item['Id_Guide'] ?>"><?php echo $item['Ville'].", ".$item['Pays']." : " ?><span style="font-style:italic;color:#8C8C8C;font-size:20px;"><?php echo $item['Titre'] ?><span></a></div>
                             <div class="resultAuthor">Ecris par : <?php echo $itemNomUser['Pseudo'] ?></div>
                             Tags : <a href="#"><span class="resultTag"> Culture </span></a>, <a href="#"><span class="resultTag"> Rock </span></a>
                         </div>

@@ -2,18 +2,6 @@
 #set($userPseudoRef = $userPseudo)
 
 #parse("pages/topbar.vm")
-##<?php
-
-##session_start();
-##try{
-##    $pdo_options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
-##    $bdd = new PDO('mysql:host=localhost;dbname=planmytrip', 'root', '', $pdo_options);
-##    $bdd->exec("set names utf8");
-##}catch (Exception $e){
-##die('Erreur : ' . $e->getMessage());
-##}
-##include("pages/topbar.vm");
-##?>
 <div id="content">
     <div id="textPres">Laissez-vous guider..!</div>
     <div id="search">
@@ -46,8 +34,6 @@
             <a href="pages/new_guide/">Proposez votre Guide</a>
         </div>
     #end
-    <?php
-
     <br><br>
 </div>
 <div style="font-weight:bold;font-size:25px;margin-top:20px;margin-bottom:15px;text-align:center;">Derniers guides publiées</div>
