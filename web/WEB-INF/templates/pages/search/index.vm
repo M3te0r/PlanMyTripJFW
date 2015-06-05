@@ -1,19 +1,6 @@
 #set($userIdRef = $userId)
 #set($userPseudoRef = $userPseudo)
 #parse("topbar.vm")
-##<?php
-##session_start();
-##include("../pages/topbar.vm");
-##if(isset($_GET['search'])){
-##    $s =  htmlentities($_GET['search'],ENT_QUOTES);
-##}else{
-##    $s = "";
-##}
-##if(isset($_GET['search'])){
-##    $d =  htmlentities($_GET['duration'],ENT_QUOTES);
-##}else{
-##    $d = "";
-##}
 <div id="results">
 	<div id="reultsTitle">
 		Résultat de la cherche pour : $s <b><br>
@@ -24,7 +11,7 @@
 	</div> 
 
 	<div id="resultsItems"><br>
-        <form action="?<?php echo isset($s)."&".isset($d) ?>"  style="padding-bottom:10px;border-bottom:1px solid #D9D9D9;margin-bottom:20px;">
+        <form action="?1&1" style="padding-bottom:10px;border-bottom:1px solid #D9D9D9;margin-bottom:20px;">
             <span style="font-size:20px;margin-left:20px;">Nouvelle recherche</span> <input type=text class="searchBarSearch" name="search" autocomplete="off" placeholder=" Entrez le nom d'une ville" value=$!s>
 
             Durée du séjour :
@@ -78,32 +65,6 @@
 
             #end
         #end
-##			<?php
-##            if($s==null){
-##                echo 'Aucun résultat';
-##            }
-##            elseif(strlen($s)<4){
-##                echo 'Les termes de votre recherche doivent être supérieurs à 3 caractères';
-##            }
-##            else{
-##                if($d == 'n'){
-##                    $requeteG = $bdd->prepare("SELECT * FROM guide WHERE ville LIKE ? AND `isValide` LIKE ? ORDER BY Id_Guide");
-##                    $requeteG->execute(array('%'.mysql_real_escape_string($s).'%',1));
-##                }elseif($d == 'p'){
-##                    $p = 10;
-##                    $requeteG = $bdd->prepare("SELECT * FROM guide WHERE ville LIKE ? AND duration >= ? AND `isValide` LIKE ? ORDER BY Id_Guide");
-##                    $requeteG->execute(array('%'.mysql_real_escape_string($s).'%', $p,1));
-##                }else{
-##                    $requeteG = $bdd->prepare("SELECT * FROM guide WHERE ville LIKE ? AND duration LIKE ? AND `isValide` LIKE ? ORDER BY Id_Guide");
-##                    $requeteG->execute(array('%'.mysql_real_escape_string($s).'%', $d,1));
-##                }
-##                while($item=$requeteG->fetch()){
-##                    $requeteN = $bdd->prepare("SELECT Pseudo FROM user WHERE Id_User LIKE ?");
-##                    $requeteN->execute(array($item['Id_User']));
-##                    while($itemNomUser=$requeteN->fetch()){
-##                ?>
-
-
 		</table>
 	</div>
 
@@ -111,78 +72,4 @@
 	</div> 
 	</div>
 </div>
-    <script type="text/javascript">
-    var o = [];
-    function autocomplete(s, result) {
-        if(s && s.length > 2) {
-            var r = $('#searchAutocomplete');
-            r.css('display','block');
-            $.ajax({
-                type : "POST",
-                url : "../pages/autocomplete.php",
-                dataType : "json",
-                data : { data : s }
-            }).done(function(data) {
-                console.log(data);
-                o = data;
-                var ul = $('<ul />');
-                $(data).each(function(index, item) {
-                    var li = $('<li />');
-                    li.text(item);
-                    li.on('click', function(e){
-                        $('.searchBarSearch').val(li.text());
-                        result.css('display','none');
-                        $('body').on('click', function(e){
-                            result.css('display','none');
-                        });
-                    });
-                    li.hover(function(){
-                        li.addClass("aselected");
-                    },function(){
-                        li.removeClass("aselected");
-                    });
-                    ul.append(li);
-                });
-                result.html(ul);
-            }).fail(function() {
-                result.html('<p> Une erreur est survenue </p>');
-            });
-        } else {
-            result.css('display','none');
-            result.html('');
-        }
-    }
-    var s = $(".searchBarSearch").val();
-    $(document).ready(function() {
-        var i = 0;
-        $('.searchBarSearch').on('keyup', function(e) {
-            if(e.keyCode == 40){
-                if(i <= 3){
-                    $(e.target).val(o[i]);
-                    $(document.getElementsByTagName("li")).removeClass("aselected");
-                    $(document.getElementsByTagName("li")[i]).addClass("aselected");
-                    i = i + 1;
-                    if(i == 0){
-                        $(e.target).val(s);
-                    }
-                }
-            }else if(e.keyCode == 38){
-                if(i <= 3){
-                    i--;
-                    $(document.getElementsByTagName("li")).removeClass("aselected");
-                    $(document.getElementsByTagName("li")[i]).addClass("aselected");
-                if(i == 0){
-                    $(e.target).val(s);
-                }else{
-                    $(e.target).val(o[i]);
-                }
-            }
-            }else{
-                autocomplete($(e.target).val(), $('#searchAutocomplete'));
-            }
-        });
-    });
-
-    
-    </script>
 #include("footer.vm")
