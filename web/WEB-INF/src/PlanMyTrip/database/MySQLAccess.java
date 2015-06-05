@@ -34,7 +34,7 @@ public class MySQLAccess {
     public static ResultSet searchCityByName(String searched) throws SQLException
     {
         PreparedStatement statement = getInstance().connection.prepareStatement("SELECT Ville FROM guide WHERE Ville LIKE ? ");
-        statement.setString(1, searched);
+        statement.setString(1, "%" + searched + "%");
 
         return statement.executeQuery();
 
@@ -58,7 +58,7 @@ public class MySQLAccess {
     public static List searchGuideWithSearchAndDuration(String search, int duration) throws SQLException
     {
         PreparedStatement statement = getInstance().connection.prepareStatement("SELECT * FROM guide WHERE ville LIKE ? AND duration >= ? AND `isValide` = 1 ORDER BY Id_Guide");
-        statement.setString(1, search);
+        statement.setString(1, "%" + search + "%");
         statement.setInt(2, duration);
         ResultSet resultSet = statement.executeQuery();
         List<Object[]> r = new ArrayList<>();
@@ -82,7 +82,7 @@ public class MySQLAccess {
         PreparedStatement statement = getInstance().connection.prepareStatement("SELECT * FROM guide " +
                 " INNER JOIN user as u ON u.Id_User=guide.Id_User " +
                 " INNER JOIN votes as v ON v.idGuide=guide.Id_Guide WHERE ville LIKE ? AND `isValide` = 1 ORDER BY Id_Guide ");
-        statement.setString(1, cityString);
+        statement.setString(1, "%" + cityString + "%");
         ResultSet resultSet = statement.executeQuery();
         List<Object[]> r = new ArrayList<>();
         while(resultSet.next())
@@ -108,10 +108,28 @@ public class MySQLAccess {
         return statement.executeQuery();
     }
 
-    public static ResultSet getLastGuides() throws SQLException
+    public static List getLastGuides() throws SQLException
     {
-        PreparedStatement statement = getInstance().connection.prepareStatement("SELECT * FROM guide WHERE isValide = 1 ORDER BY Id_Guide DESC LIMIT 0 , 5");
-        return statement.executeQuery();
+        PreparedStatement statement = getInstance().connection.prepareStatement("SELECT Id_Guide, Titre, Pseudo, Pays, Ville, nbUp - nbDown as NbVote, duration FROM guide " +
+                " INNER JOIN votes as v ON v.idGuide=guide.Id_Guide  " +
+                " INNER JOIN user as u ON u.Id_User=guide.Id_User WHERE isValide = 1 ORDER BY Id_Guide DESC LIMIT 0 , 5");
+        ResultSet resultSet  = statement.executeQuery();
+        List<Object[]> lastGuides = new ArrayList<>(5);
+        while (resultSet.next())
+        {
+            Object []tmp = new Object[7];
+            tmp[0] = resultSet.getInt("Id_Guide");
+            tmp[1] = resultSet.getString("Titre");
+            tmp[2] = resultSet.getString("Pseudo");
+            tmp[3] = resultSet.getString("Pays");
+            tmp[4] = resultSet.getString("Ville");
+            tmp[5] = resultSet.getInt("nbVote");
+            tmp[6] = resultSet.getInt("duration");
+            lastGuides.add(tmp);
+        }
+
+        return lastGuides;
+
     }
 
     public static ResultSet getVotesForGuide(int guideId) throws SQLException
@@ -291,6 +309,25 @@ public class MySQLAccess {
         statement.setInt(3, userId);
         statement.setString(4, oldPassword);
         return statement.executeUpdate();
+    }
+
+    public static void InsertNewGuide(int userId, String pays, String ville, String titre, String contenu, int duration) throws SQLException
+    {
+        PreparedStatement statement = getInstance().connection.prepareStatement("INSERT INTO guide(Titre, Contenu, Id_User, Pays, Ville, duration, isValide) VALUES(?,?,?,?,?,?,?)");
+        statement.setString(1, titre);
+        statement.setString(2, contenu);
+        statement.setInt(3, userId);
+        statement.setString(4, pays);
+        statement.setString(5, ville);
+        statement.setInt(6, duration);
+        statement.setInt(7, 1);
+        statement.executeUpdate();
+        PreparedStatement statement2 = getInstance().connection.prepareStatement("INSERT INTO votes(idGuide, nbDown, nbUp) VALUES ((SELECT Id_Guide FROM guide WHERE Titre = ? AND Id_User = ?),?,?)");
+        statement2.setString(1, titre);
+        statement2.setInt(2, userId);
+        statement2.setInt(3, 0);
+        statement2.setInt(4, 0);
+        statement2.executeUpdate();
     }
 
     public static String getBaseUrl()

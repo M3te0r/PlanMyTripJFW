@@ -1,0 +1,10 @@
+#set($userIdRef = $userId)
+#set($userPseudoRef = $userPseudo)
+#parse("topbar.vm")
+<div style="padding-top:100px"></div>
+<div id="sendGuide">
+
+	<br>Merci de votre participation !<br>
+	Votre guide sera en ligne apres modération (&lsaquo; 48 heures).<br><br>
+</div><br><br><br>
+#include("footer.vm")

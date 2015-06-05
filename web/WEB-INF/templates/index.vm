@@ -50,32 +50,16 @@
     </tr>
     </thead>
     <tbody>
-##    <?php
-##                    $lastGuids = $bdd->prepare("SELECT * FROM guide WHERE isValide = 1 ORDER BY Id_Guide DESC LIMIT 0 , 5");
-##        $lastGuids->execute();
-##    while($guide=$lastGuids->fetch()){
-##        $user = $bdd->prepare("SELECT Pseudo FROM user WHERE Id_User LIKE ?");
-##        $user->execute(array($guide['Id_User']));
-##        $vote = $bdd->prepare("SELECT  `nbDown` ,  `nbUp` FROM  `votes` WHERE  `idGuide` LIKE ?");
-##        $vote->execute(array($guide['Id_Guide']));
-##    while($u=$user->fetch()){
-##    while($v=$vote->fetch()){
-##    ?>
-
+    #foreach($guide in $lastGuides)
     <tr>
         <td></td>
-        <td><a href="pages/guide/index.php?Id_Guide=<?php echo $guide['Id_Guide'] ?>" style="color:black;"><?php echo $guide['Titre']; ?></a></td>
-        <td><?php echo $guide['duration']; ?> Jours</td>
-        <td><?php echo $u['Pseudo']; ?></td>
-        <td><?php echo $v['nbUp']-$v['nbDown']; ?></td>
+        <td><a href="pages/guide/index.html?Id_Guide=$guide[0]" style="color:black;">$guide[1]</a></td>
+        <td>$guide[6] Jours</td>
+        <td>$guide[2]</td>
+        <td>$guide[5]</td>
         <td></td>
     </tr>
-
-    <?php
-                                }
-                            }
-                        }
-                    ?>
+    #end
     </tbody>
 </table><br>
 </div>
