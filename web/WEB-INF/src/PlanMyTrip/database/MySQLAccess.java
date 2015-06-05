@@ -108,10 +108,28 @@ public class MySQLAccess {
         return statement.executeQuery();
     }
 
-    public static ResultSet getLastGuides() throws SQLException
+    public static List getLastGuides() throws SQLException
     {
-        PreparedStatement statement = getInstance().connection.prepareStatement("SELECT * FROM guide WHERE isValide = 1 ORDER BY Id_Guide DESC LIMIT 0 , 5");
-        return statement.executeQuery();
+        PreparedStatement statement = getInstance().connection.prepareStatement("SELECT Id_Guide, Titre, Pseudo, Pays, Ville, nbUp - nbDown as NbVote, duration FROM guide " +
+                " INNER JOIN votes as v ON v.idGuide=guide.Id_Guide  " +
+                " INNER JOIN user as u ON u.Id_User=guide.Id_User WHERE isValide = 1 ORDER BY Id_Guide DESC LIMIT 0 , 5");
+        ResultSet resultSet  = statement.executeQuery();
+        List<Object[]> lastGuides = new ArrayList<>(5);
+        while (resultSet.next())
+        {
+            Object []tmp = new Object[7];
+            tmp[0] = resultSet.getInt("Id_Guide");
+            tmp[1] = resultSet.getString("Titre");
+            tmp[2] = resultSet.getString("Pseudo");
+            tmp[3] = resultSet.getString("Pays");
+            tmp[4] = resultSet.getString("Ville");
+            tmp[5] = resultSet.getInt("nbVote");
+            tmp[6] = resultSet.getInt("duration");
+            lastGuides.add(tmp);
+        }
+
+        return lastGuides;
+
     }
 
     public static ResultSet getVotesForGuide(int guideId) throws SQLException

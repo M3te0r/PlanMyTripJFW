@@ -1,5 +1,6 @@
 package PlanMyTrip.action;
 
+import PlanMyTrip.database.MySQLAccess;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -9,6 +10,7 @@ import org.esgi.web.framework.context.interfaces.IContext;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.sql.SQLException;
 
 /**
  * Created by Mathieu on 02/06/2015.
@@ -50,6 +52,12 @@ public class ActionIndex implements IAction {
         indexContext.put("userId", context.getSessionAttribute("user-id"));
         indexContext.put("userPseudo", context.getSessionAttribute("user-pseudo"));
         Template  t = ve.getTemplate("index.vm");
+
+        try {
+            indexContext.put("lastGuides", MySQLAccess.getLastGuides());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         StringWriter writer = new StringWriter();
         t.merge(indexContext, writer);
         try {
