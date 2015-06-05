@@ -1,6 +1,7 @@
 package PlanMyTrip.action;
 
 import PlanMyTrip.context.Context;
+import PlanMyTrip.database.MySQLAccess;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -10,11 +11,12 @@ import org.esgi.web.framework.context.interfaces.IContext;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.sql.SQLException;
 
 /**
  * Created by Mathieu on 05/06/2015.
  */
-public class ActionNewGuide implements IAction {
+public class ActionPostGuide implements IAction {
 
     /**
      * the highest priority is 0, the lower is Integer.MAX_VALUE
@@ -61,24 +63,43 @@ public class ActionNewGuide implements IAction {
 
     @Override
     public void proceed(IContext context) {
+
         context._getResponse().setContentType("text/html");
-        context._getResponse().setCharacterEncoding("UTF-8");
         VelocityEngine ve = new VelocityEngine();
         ve.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, context._getRequest().getServletContext().getRealPath("/").replace("\\", "/") + "WEB-INF/templates/pages");
         ve.init();
         VelocityContext pageContext = new VelocityContext();
         pageContext.put("userId", context.getSessionAttribute("user-id"));
         pageContext.put("userPseudo", context.getSessionAttribute("user-pseudo"));
-        pageContext.put("e", ((Context) context).getParameterUnique("error"));
-        Template t = ve.getTemplate("/new_guide/index.vm");
+        String pays = ((Context) context).getParameterUnique("pays");
+        String titre = ((Context) context).getParameterUnique("titre");
+        String ville = ((Context) context).getParameterUnique("ville");
+        String duration = ((Context) context).getParameterUnique("duration");
+        String contenu = ((Context) context).getParameterUnique("input");
+
+
+        Template t = ve.getTemplate("/new_guide/post.vm");
         StringWriter writer = new StringWriter();
         t.merge(pageContext, writer);
 
         try {
+            if (pays == null || pays.isEmpty() || ville == null || ville.isEmpty() || contenu == null || contenu.isEmpty() || duration == null || duration.isEmpty())
+            {
+                context._getResponse().sendRedirect(context._getRequest().getHeader("referer") + "?error=1");
+            }
+            else {
+                try {
+                    MySQLAccess.InsertNewGuide((Integer) context.getSessionAttribute("user-id"), pays, ville, titre, contenu, Integer.parseInt(duration));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+            }
             context._getResponse().getWriter().write(writer.toString());
         } catch (IOException e) {
             System.out.println("Could not load page searched.html");
             e.printStackTrace();
         }
+
     }
 }

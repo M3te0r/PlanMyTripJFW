@@ -3,6 +3,7 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/web/WEB-INF/templates/pages/legal.vm" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/web/WEB-INF/templates/pages/new_guide/index.vm" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/web/WEB-INF/templates/pages/new_guide/post.vm" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/web/WEB-INF/templates/pages/registration/index.vm" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/web/WEB-INF/templates/pages/search/index.vm" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/web/WEB-INF/templates/pages/topbar.vm" charset="windows-1252" />

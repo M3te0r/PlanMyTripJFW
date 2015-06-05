@@ -284,6 +284,25 @@ public class MySQLAccess {
         return statement.executeUpdate();
     }
 
+    public static void InsertNewGuide(int userId, String pays, String ville, String titre, String contenu, int duration) throws SQLException
+    {
+        PreparedStatement statement = getInstance().connection.prepareStatement("INSERT INTO guide(Titre, Contenu, Id_User, Pays, Ville, duration, isValide) VALUES(?,?,?,?,?,?,?)");
+        statement.setString(1, titre);
+        statement.setString(2, contenu);
+        statement.setInt(3, userId);
+        statement.setString(4, pays);
+        statement.setString(5, ville);
+        statement.setInt(6, duration);
+        statement.setInt(7, 1);
+        statement.executeUpdate();
+        PreparedStatement statement2 = getInstance().connection.prepareStatement("INSERT INTO votes(idGuide, nbDown, nbUp) VALUES ((SELECT Id_Guide FROM guide WHERE Titre = ? AND Id_User = ?),?,?)");
+        statement2.setString(1, titre);
+        statement2.setInt(2, userId);
+        statement2.setInt(3, 0);
+        statement2.setInt(4, 0);
+        statement2.executeUpdate();
+    }
+
     public static String getBaseUrl()
     {
         return "http://localhost:8081/PlanMyTrip";
