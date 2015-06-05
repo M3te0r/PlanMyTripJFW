@@ -819,6 +819,12 @@ h6 {
     -border:1px solid black;
 }
 
+.error{
+    position: absolute;
+    top:10%;
+    left:45%;
+}
+
 #accountMenuBar {
     border-bottom: 1px solid #357ebd;
     text-align: center;

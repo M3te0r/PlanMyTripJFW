@@ -1,11 +1,13 @@
 #parse("topbar.vm")
 
 #set($baseUrl = $SQL.getBaseUrl())
-#*set($userId = 13)*#
 
 #if($Id_Guide)
-    $Id_Guide
-    #set($resultGuide = $SQL.getGuideById(15))
+    #set($resultGuide = $SQL.getGuideById($Id_Guide))
+#end
+
+#if(!$resultGuide)
+    <span class="error">Aucun resultat pour cet ID de guide</span>
 #end
 
 

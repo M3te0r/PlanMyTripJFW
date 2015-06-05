@@ -188,7 +188,7 @@ public class MySQLAccess {
         statement.setInt(1, idGuide);
         ResultSet resultSet = statement.executeQuery();
         List<Object[]> result = new ArrayList<>();
-        while (resultSet.next())
+        if(resultSet.next())
         {
             Object []tmp = new Object[8];
             tmp[0] = resultSet.getInt("Id_Guide");
@@ -200,8 +200,10 @@ public class MySQLAccess {
             tmp[6] = resultSet.getInt("nbDown");
             tmp[7] = resultSet.getInt("nbUp");
             result.add(tmp);
+            return result;
         }
-        return result;
+        return null;
+
     }
 
     public static void registerUser(String realname, String pseudo, String mail, String password) throws SQLException
