@@ -122,11 +122,26 @@ public class MySQLAccess {
         return statement.executeQuery();
     }
 
-    public static ResultSet getUserGuidesInfos(int idUser) throws SQLException
+    public static List getUserGuidesInfos(int idUser) throws SQLException
     {
-        PreparedStatement statement = getInstance().connection.prepareStatement("SELECT Id_Guide, Titre, Contenu, Id_User, Pays, Ville, `Datetime`, duration, isValide FROM Guide WHERE Id_User = ?");
+        PreparedStatement statement = getInstance().connection.prepareStatement("SELECT Id_Guide, Titre, Contenu, Pays, Ville, `Datetime`, duration, isValide FROM Guide WHERE Id_User = ?");
         statement.setInt(1, idUser);
-        return statement.executeQuery();
+        ResultSet resultSet = statement.executeQuery();
+        List<Object[]> userGuides = new ArrayList<>();
+        while (resultSet.next())
+        {
+            Object []tmp = new Object[8];
+            tmp[0] = resultSet.getInt("Id_Guide");
+            tmp[1] = resultSet.getString("Titre");
+            tmp[2] = resultSet.getString("Contenu");
+            tmp[3] = resultSet.getString("Pays");
+            tmp[4] = resultSet.getString("Ville");
+            tmp[5] = resultSet.getString("Datetime");
+            tmp[6] = resultSet.getInt("duration");
+            tmp[7] = resultSet.getInt("isValide");
+            userGuides.add(tmp);
+        }
+        return userGuides;
     }
 
     public static List getUserByLoginAndPassword(String login, String password) throws SQLException
@@ -170,6 +185,19 @@ public class MySQLAccess {
             result.add(tmp);
         }
         return result;
+    }
+
+    public static void registerUser(String realname, String pseudo, String mail, String password) throws SQLException
+    {
+        PreparedStatement statement = getInstance().connection.prepareStatement("INSERT INTO User(FullName, Pseudo, Mail, Password, ValidateKey, IsValidate) VALUES(?,?,?,?,?,?)");
+        statement.setString(1, realname);
+        statement.setString(2, pseudo);
+        statement.setString(3, mail);
+        statement.setString(4, password);
+        statement.setString(5, "");
+        statement.setInt(6, 1);
+        statement.executeUpdate();
+
     }
 
     public static ResultSet hasUserVoted(int idGuide, int idUser) throws SQLException

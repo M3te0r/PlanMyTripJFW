@@ -29,18 +29,20 @@ public class FrontController extends HttpServlet implements IFrontController {
 		dispatcher = new Dispatcher();
 		rewriter.addRule(new RewriteRule(URIroot + "/css/(.*\\.(css))", "GET|POST", "PlanMyTrip.action.ActionStyle"));
 		rewriter.addRule(new RewriteRule(URIroot + "/font/(.*\\.((otf)|(ttf)))", "GET|POST", "PlanMyTrip.action.ActionRetrieveFont"));
-		rewriter.addRule(new RewriteRule(URIroot + "/img/(.*\\.((jpe?g)|(png)))", "GET|POST", "PlanMyTrip.action.ActionRetrieveImage"));
+		rewriter.addRule(new RewriteRule(URIroot + "/img/(.*\\.((jpe?g)|(png)|(gif)))", "GET|POST", "PlanMyTrip.action.ActionRetrieveImage"));
 		rewriter.addRule(new RewriteRule(URIroot  + "/js/(.*\\.(js))", "GET|POST", "PlanMyTrip.action.ActionRetrieveJavascript"));
-		rewriter.addRule(new RewriteRule(URIroot + "/js/vendor/(.*\\.(js))", "GET|POST", "PlanMyTrip.action.ActionRetrieveJavascript"));
 		rewriter.addRule(new RewriteRule(URIroot + "$", "GET|POST", "PlanMyTrip.action.ActionIndex"));
-//		rewriter.addRule(new RewriteRule(URIroot + "(\\/.?(index.html))", "GET|POST", "PlanMyTrip.action.ActionIndex"));
+		rewriter.addRule(new RewriteRule(URIroot + "/$", "GET|POST", "PlanMyTrip.action.ActionIndex"));
 		rewriter.addRule(new RewriteRule(URIroot + "/index.html", "GET|POST", "PlanMyTrip.action.ActionIndex"));
 		rewriter.addRule(new RewriteRule(URIroot + "/pages/search/index.html", "GET|POST", "PlanMyTrip.action.ActionSearchGuide"));
 		rewriter.addRule(new RewriteRule(URIroot + "/pages/guide/index.html", "GET|POST", "PlanMyTrip.action.ActionGuide"));
-//		rewriter.addRule(new RewriteRule(URIroot + "/pages/(.*)", "GET|POST", "PlanMyTrip.action.ActionRetrievePage"));
 		rewriter.addRule(new RewriteRule(URIroot + "/pages/loger/login.html", "GET|POST", "PlanMyTrip.action.ActionUserLogin"));
 		rewriter.addRule(new RewriteRule(URIroot + "/pages/loger/logout.html", "GET|POST", "PlanMyTrip.action.ActionUserLogout"));
-//		rewriter.addRule(new RewriteRule(URIroot + "/pages/(.*\\.(html))", "GET|POST", "PlanMyTrip.action.ActionRetrievePage"));
+		rewriter.addRule(new RewriteRule(URIroot + "/pages/registration/index.html", "GET|POST", "PlanMyTrip.action.ActionUserRegistrationIndex"));
+		rewriter.addRule(new RewriteRule(URIroot + "/pages/registration/registration.html", "GET|POST", "PlanMyTrip.action.ActionUserRegistration"));
+		rewriter.addRule(new RewriteRule(URIroot + "/pages/user/account/index.html", "GET|POST", "PlanMyTrip.action.ActionUserAccountIndex"));
+		rewriter.addRule(new RewriteRule(URIroot + "/pages/user/account/script.js", "GET|POST", "PlanMyTrip.action.ActionUserAccountJavascript"));
+		rewriter.addRule(new RewriteRule(URIroot + "/pages/user/account/guide.html", "GET|POST", "PlanMyTrip.action.ActionUserGuides"));
 	}
 
 	@Override
@@ -54,12 +56,7 @@ public class FrontController extends HttpServlet implements IFrontController {
 			rewriter.rewrite(c = new Context(request, response));
 			
 			if(checkClass(c)) {
-//				if(checkRights(c)) {
 				dispatcher.dispatch(c);
-//				} else {
-//					// 403
-//					JwfErrorHandler.displayError(c, 403, "you doesn't have the rights to view this page");
-//				}
 			} else {
 				// 404
 				JwfErrorHandler.displayError(c, 404, "the page doesn't exist");

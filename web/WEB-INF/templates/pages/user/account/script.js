@@ -28,14 +28,14 @@ html.Menu.prototype.init = function() {
 		});
 		i ++;
 	});
-}
+};
 
 html.Form = function(global, sub, items, bool){
-	this.global = global,
+	this.global = global;
 	this.sub = sub;
 	this.items = items;
 	
-}
+};
 
 html.Form.prototype.init = function(){
 	
@@ -55,7 +55,7 @@ html.Form.prototype.init = function(){
 			me.table.append('<tr><td style="width:180px;">'+item.label+' </td><td><input id="'+item.id+'" onclick="'+item.click+'" type="'+item.type+'" placeholder="'+item.placeholder+'" name="'+item.name+'" class="'+item.cls+'" '+item.required+ 'value="'+savevalue+'" /></td></tr>');
 			$(item).addClass('form_element');
 		});
-}
+};
 
 
 
@@ -65,7 +65,7 @@ var accountMenuBar = new html.Menu($("#accountManagment"), [
 								label : "Mes guides",
 								click : function(e){
 									var iframe = $('<iframe />');
-									iframe.attr('src','guide.php');
+									iframe.attr('src','guide.html');
 									$('#sub_content').html('');
 									iframe.css('border','none');
 									iframe.css('width','600');
@@ -163,14 +163,13 @@ accountMenuBar.init();
 
 
 function sendInfo(){
-	console.log("On es entré! aaah, c'est bon, vas-y salope, rentre en moi!");
 	var old = $('#oldmdp').val();
 	var newm = $('#newmdp').val();
 	var conf = $('#newconfmdp').val();
 	var name = $('#fullname').val();
 	$.ajax({
 		type	: "POST",
-		url		: "sendInfo.php",
+		url		: "sendInfo.html",
 		//datatype: "json",
 		data 	: 	{
 						"fullname" : name,
@@ -196,7 +195,7 @@ function deleteAccount(){
 	var suppr = $('#supprmdp').val();
 	$.ajax({
 		type	: "POST",
-		url		: "deleteAccount.php",
+		url		: "deleteAccount.html",
 		//datatype: "json",
 		data 	: 	{
 						"supprmdp" : suppr
