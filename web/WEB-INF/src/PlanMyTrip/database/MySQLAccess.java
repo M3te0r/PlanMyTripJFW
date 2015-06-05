@@ -34,7 +34,7 @@ public class MySQLAccess {
     public static ResultSet searchCityByName(String searched) throws SQLException
     {
         PreparedStatement statement = getInstance().connection.prepareStatement("SELECT Ville FROM guide WHERE Ville LIKE ? ");
-        statement.setString(1, searched);
+        statement.setString(1, "%" + searched + "%");
 
         return statement.executeQuery();
 
@@ -58,7 +58,7 @@ public class MySQLAccess {
     public static List searchGuideWithSearchAndDuration(String search, int duration) throws SQLException
     {
         PreparedStatement statement = getInstance().connection.prepareStatement("SELECT * FROM guide WHERE ville LIKE ? AND duration >= ? AND `isValide` = 1 ORDER BY Id_Guide");
-        statement.setString(1, search);
+        statement.setString(1, "%" + search + "%");
         statement.setInt(2, duration);
         ResultSet resultSet = statement.executeQuery();
         List<Object[]> r = new ArrayList<>();
@@ -82,7 +82,7 @@ public class MySQLAccess {
         PreparedStatement statement = getInstance().connection.prepareStatement("SELECT * FROM guide " +
                 " INNER JOIN user as u ON u.Id_User=guide.Id_User " +
                 " INNER JOIN votes as v ON v.idGuide=guide.Id_Guide WHERE ville LIKE ? AND `isValide` = 1 ORDER BY Id_Guide ");
-        statement.setString(1, cityString);
+        statement.setString(1, "%" + cityString + "%");
         ResultSet resultSet = statement.executeQuery();
         List<Object[]> r = new ArrayList<>();
         while(resultSet.next())
