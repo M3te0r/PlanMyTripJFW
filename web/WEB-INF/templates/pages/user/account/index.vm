@@ -11,7 +11,7 @@
 <script type="text/javascript" src="script.js"></script>
 #else
 <div id="blanc" style="padding-top:200px;"></div>
-<div id="coError" style="width:500px;margin:auto;"> vous devez Ãªtre connÃ©ctÃ© pour afficher cette page !</div>
+<div id="coError" style="width:500px;margin:auto;"> vous devez être connécté pour afficher cette page !</div>
 #end
 <div id="user_content">
 	<div id="sub_content"></div>

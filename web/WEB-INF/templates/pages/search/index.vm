@@ -16,7 +16,7 @@
 ##}
 <div id="results">
 	<div id="reultsTitle">
-		RÃ©sultat de la cherche pour : $s <b><br>
+		Résultat de la cherche pour : $s <b><br>
 	</div>
 
 	<div id="resultPage">
@@ -27,7 +27,7 @@
         <form action="?<?php echo isset($s)."&".isset($d) ?>"  style="padding-bottom:10px;border-bottom:1px solid #D9D9D9;margin-bottom:20px;">
             <span style="font-size:20px;margin-left:20px;">Nouvelle recherche</span> <input type=text class="searchBarSearch" name="search" autocomplete="off" placeholder=" Entrez le nom d'une ville" value=$!s>
 
-            DurÃ©e du sÃ©jour :
+            Durée du séjour :
             <SELECT style="width:60px;" name="duration">
                     <OPTION VALUE="n"> </OPTION>
                     <OPTION VALUE="1">1</OPTION>
@@ -46,7 +46,7 @@
         </form>
 		<table>
         #if(!$s)
-            Aucun RÃ©sultat
+            Aucun Résultat
         #else
             #if($d == 'n')
                 #set($result = $SQL.getSearchedByCity($s))
@@ -80,10 +80,10 @@
         #end
 ##			<?php
 ##            if($s==null){
-##                echo 'Aucun rÃ©sultat';
+##                echo 'Aucun résultat';
 ##            }
 ##            elseif(strlen($s)<4){
-##                echo 'Les termes de votre recherche doivent Ãªtre supÃ©rieurs Ã  3 caractÃ¨res';
+##                echo 'Les termes de votre recherche doivent être supérieurs à 3 caractères';
 ##            }
 ##            else{
 ##                if($d == 'n'){

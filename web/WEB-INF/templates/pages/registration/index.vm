@@ -2,7 +2,7 @@
 <div id="registration">
 	<div id="regImg"></div>
 	<div id="regForm">
-		Rejoignez la communautÃ© de PlanMyTrip!<br><br>
+		Rejoignez la communauté de PlanMyTrip!<br><br>
 		#if($err)
 		<div id="regError">
 			Oups..!<br>
@@ -33,7 +33,7 @@
 				</tr>
 			</table>
 			<input type="checkbox" name="licence"> 
-			<span style="font-size:10px;">En cochant cette case, j'accepte de vendre mes informations personnelles et de me faire traquer de publicitÃ©s Ã  vie. Qui tue. Oui.</span>
+			<span style="font-size:10px;">En cochant cette case, j'accepte de vendre mes informations personnelles et de me faire traquer de publicités à vie. Qui tue. Oui.</span>
 			<br><input type=submit class="validateRegistration" value="Valider">
 		</form>
 	</div>
@@ -41,9 +41,9 @@
 
 <div id="adventages">
 - Proposez vos propres guides,<br><br>
-- Votez pour ceux que vous avez aimÃ©,<br><br>
+- Votez pour ceux que vous avez aimé,<br><br>
 - Partagez votre experience,<br><br>
-- Profitez d'une communautÃ© enthousiaste,<br><br>
+- Profitez d'une communauté enthousiaste,<br><br>
 - Des bons plans exceptionnels<br><br>
 et bien plus encore !
 </div>

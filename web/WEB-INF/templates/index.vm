@@ -31,7 +31,7 @@
         </div>
     #else
         <div id="propose">
-            <a href="pages/new_guide/">Proposez votre Guide</a>
+            <a href="pages/new_guide/index.html">Proposez votre Guide</a>
         </div>
     #end
     <br><br>
