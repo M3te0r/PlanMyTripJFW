@@ -199,55 +199,64 @@ public class MySQLAccess {
 
     }
 
-    public static ResultSet hasUserVoted(int idGuide, int idUser) throws SQLException
+    public static boolean hasUserVoted(int idGuide, int idUser) throws SQLException
     {
         PreparedStatement statement = getInstance().connection.prepareStatement("SELECT hasVoted FROM votesByUser WHERE idGuide= ? AND idUser= ?");
         statement.setInt(1, idGuide);
         statement.setInt(2, idUser);
-        return statement.executeQuery();
-    }
-
-    public static void updateVoteForUserGuide(int idGuide, int idUser) throws SQLException
-    {
-        PreparedStatement statement = getInstance().connection.prepareStatement("UPDATE votes SET nbDown = nbDown+1 WHERE idGuide = " +
-                "(SELECT idGuide FROM votesByUser WHERE idGuide= ? AND idUser = ? AND hasVoted=0);" +
-                " UPDATE votesbyuser SET hasvoted=1 WHERE idUser = ? AND idGuide = ? AND hasVoted=0;");
-        statement.setInt(1, idGuide);
-        statement.setInt(2, idUser);
-        statement.setInt(3, idUser);
-        statement.setInt(4, idGuide);
-        statement.executeUpdate();
-
+        ResultSet result = statement.executeQuery();
+        if(result.next()){
+            int hasVoted = result.getInt("hasVoted");
+            return (hasVoted == 1);
+        }
+        return false;
     }
 
     public static void voteForUserGuideByUpdate(int idGuide, int idUser, int up, int down) throws SQLException
     {
-        PreparedStatement statement = getInstance().connection.prepareStatement("UPDATE votes SET nbDown = nbDown+?, nbUp = nbUp+? WHERE idGuide = " +
-                "(SELECT idGuide FROM votesByUser WHERE idGuide= ? AND idUser = ? AND hasVoted=0);" +
-                " UPDATE votesbyuser SET hasvoted=1 WHERE idUser = ? AND idGuide = ? AND hasVoted=0;");
-        statement.setInt(1, down);
-        statement.setInt(2, up);
-        statement.setInt(3, idGuide);
-        statement.setInt(4, idUser);
-        statement.setInt(5, idUser);
-        statement.setInt(6, idGuide);
-        statement.executeUpdate();
+        PreparedStatement statement1 = getInstance().connection.prepareStatement("UPDATE votes SET nbDown = nbDown+?, nbUp = nbUp+? WHERE idGuide = ? ;UPDATE votesbyuser SET hasVoted=1 WHERE idUser = ? AND idGuide = ?;");
+
+        statement1.setInt(1, down);
+        statement1.setInt(2, up);
+        statement1.setInt(3, idGuide);
+
+        statement1.setInt(4, idUser);
+        statement1.setInt(5, idGuide);
+
+        statement1.executeUpdate();
+        updateVotesByUser(idUser, idGuide);
+    }
+
+    private static void updateVotesByUser(int idUser, int idGuide) throws SQLException
+    {
+        PreparedStatement statement1 = getInstance().connection.prepareStatement("UPDATE votesbyuser SET hasVoted=1 WHERE idUser = ? AND idGuide = ?");
+
+        statement1.setInt(1, idUser);
+        statement1.setInt(2, idGuide);
+
+        statement1.executeUpdate();
     }
 
     public static void voteForUserGuideByCreate(int idGuide, int idUser, int up, int down) throws SQLException
     {
-        PreparedStatement statement = getInstance().connection.prepareStatement(("INSERT INTO votesbyuser (id,idUser, idGuide, hasVoted) VALUES (?,?,?,?);" +
-                "UPDATE votes SET nbDown = nbDown+ ?, nbUp=nbUp+ ? WHERE idGuide = (SELECT idGuide FROM votesByUser WHERE idGuide = ? AND idUser = ? AND hasVoted=1)"));
+        PreparedStatement statement1 = getInstance().connection.prepareStatement("INSERT INTO votesbyuser (idUser, idGuide, hasVoted) VALUES (?,?,?)");
 
-        statement.setNull(1, Types.NULL);
-        statement.setInt(2, idUser);
-        statement.setInt(3, idGuide);
-        statement.setInt(4, 1);
-        statement.setInt(5, down);
-        statement.setInt(6, up);
-        statement.setInt(7, idGuide);
-        statement.setInt(8, idUser);
-        statement.executeUpdate();
+        statement1.setInt(1, idUser);
+        statement1.setInt(2, idGuide);
+        statement1.setInt(3, 1);
+
+        statement1.executeUpdate();
+        updateVotes(idGuide, up, down);
+
+    }
+
+    private static void updateVotes(int idGuide, int up, int down) throws SQLException {
+        PreparedStatement statement1 = getInstance().connection.prepareStatement("UPDATE votes SET `nbDown` =`nbDown`+?, `nbUp`=`nbUp`+? WHERE idGuide = ?");
+        statement1.setInt(1, down);
+        statement1.setInt(2, up);
+        statement1.setInt(3, idGuide);
+
+        statement1.executeUpdate();
     }
 
     public static int getNbLike(int idGuide) throws SQLException

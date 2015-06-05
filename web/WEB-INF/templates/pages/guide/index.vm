@@ -1,7 +1,7 @@
 #parse("topbar.vm")
 
 #set($baseUrl = $SQL.getBaseUrl())
-#set($userId = 13)
+#*set($userId = 13)*#
 
 #if($Id_Guide)
     $Id_Guide
@@ -22,37 +22,19 @@
 		<div id="guideText">
 			$guide[2]
 
-            #set($hasUserVoted = $SQL.hasUserVoted($guide[0], $userId))
-            #set($create = false)
-            #if($hasUserVoted.next())
-                set($create = true)
-            #end
-
-            #if($votes && $userId)
-                #if($votes == "like" && !$create)
-                    $SQL.voteForUserGuideByUpdate($guide[0], $userId, 1, 0)
-                #elseif($votes == "like" && $create)
-                    $SQL.voteForUserGuideByCreate($guide[0], $userId, 1, 0)
-                #elseif($votes == "dislike" && !$create)
-                    $SQL.voteForUserGuideByUpdate($guide[0], $userId, 0, 1)
-                #elseif($votes == "dislike" && $create)
-                    $SQL.voteForUserGuideByCreate($guide[0], $userId, 0, 1)
-                #end
-            #end
-
-            #set($nbUp = $SQL.getNbLike(15))
-            #set($nbDown = $SQL.getNbDislike(15))
+            #set($nbUp = $SQL.getNbLike($guide[0]))
+            #set($nbDown = $SQL.getNbDislike($guide[0]))
             <div id="votes">
                 #if($userId)
-                    <a style="color:black;text-align:center;" href="$baseUrl/pages/guide/index.html?Id_Guide=$guide[0]&votes=like" ><img src="$baseUrl/img/up.png"></a>
+                    <a style="color:black;text-align:center;" href="/PlanMyTrip/pages/guide/index.html?Id_Guide=$guide[0]&votes=like" ><img src="/PlanMyTrip/img/up.png"></a>
                     <span style="color:green;">$nbUp</span>
-                    <a style="color:black" href="$baseUrl/pages/guide/index.html?Id_Guide=$guide[0]&votes=dislike"><img src="$baseUrl/img/down.png"></a>
+                    <a style="color:black" href="/PlanMyTrip/pages/guide/index.html?Id_Guide=$guide[0]&votes=dislike"><img src="/PlanMyTrip/img/down.png"></a>
                     <span style="color:red;text-align:center;">$nbDown</span>
 
                 #else
-                    <img src='$baseUrl/img/up.png'>
+                    <img src='/PlanMyTrip/img/up.png'>
                     <span style="color:green;">$nbUp</span>
-                    <img src='$baseUrl/img/down.png'>
+                    <img src='/PlanMyTrip/img/down.png'>
                     <span style="color:red;text-align:center;">$nbDown</span>
                 #end
             </div>

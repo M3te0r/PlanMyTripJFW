@@ -11,6 +11,7 @@ import org.esgi.web.framework.context.interfaces.IContext;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.sql.SQLException;
 
 /**
  * Created by Mathieu on 04/06/2015.
@@ -67,10 +68,42 @@ public class ActionGuide implements IAction {
         ve.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, context._getRequest().getServletContext().getRealPath("/").replace("\\", "/") + "WEB-INF/templates/pages");
         ve.init();
         VelocityContext pageContext = new VelocityContext();
+
+        Object userId  = context.getSessionAttribute("user-id");
+        int intUserId = -1;
+        if(userId != null) {
+            intUserId = Integer.parseInt(userId.toString());
+        }
+
         int id_guide = Integer.parseInt(((Context) context).getParameterUnique("Id_Guide"));
         String votes = ((Context)context).getParameterUnique("votes");
+
+        try {
+            if (votes != null && intUserId != -1) {
+                boolean hasUserVoted = MySQLAccess.hasUserVoted(id_guide, intUserId);
+                if (votes.equals("like") && hasUserVoted){
+                    MySQLAccess.voteForUserGuideByUpdate(id_guide, intUserId, 1, 0);
+                }
+                else if(votes.equals("like") && !hasUserVoted){
+                    MySQLAccess.voteForUserGuideByCreate(id_guide, intUserId, 1, 0);
+                }
+                else if(votes.equals("dislike") && hasUserVoted){
+                    MySQLAccess.voteForUserGuideByUpdate(id_guide, intUserId, 0, 1);
+                }
+                else if(votes.equals("dislike") && !hasUserVoted){
+                    MySQLAccess.voteForUserGuideByCreate(id_guide, intUserId, 0, 1);
+                }
+            }
+        }
+        catch(SQLException e)
+        {
+            System.out.println("SQL error");
+            e.printStackTrace();
+        }
+
         pageContext.put("votes", votes);
         pageContext.put("Id_Guide", id_guide);
+        pageContext.put("userId", userId);
         String search = ((Context) context ).getParameterUnique("search");
         String duration = ((Context) context).getParameterUnique("duration");
         pageContext.put("s", search);
