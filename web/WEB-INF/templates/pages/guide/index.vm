@@ -1,16 +1,20 @@
 #parse("topbar.vm")
 
+#set($baseUrl = $SQL.getBaseUrl())
+#set($userId = 13)
+
 #if($Id_Guide)
     $Id_Guide
-    #set($resultGuide = $SQL.getGuideById($Id_Guide))
+    #set($resultGuide = $SQL.getGuideById(15))
 #end
 
-#foreach($guide in $resultGuide)
-	<div id="guidePage">
 
+#foreach($guide in $resultGuide)
+
+	<div id="guidePage">
 		<div id="guideInfos">
 			<br><br>
-			<a id="backBtn" href="<?php echo $_SERVER["HTTP_REFERER"];?>">&larr; Retours</a><br><br>
+			<a id="backBtn" href="$baseUrl/index.html">&larr; Retours</a><br><br>
 			<span id="guideName">$guide[5], $guide[4] : $guide[1]</span><br>
 			<span id="guideBy">Soumis par l'utilisateur : $guide[3]<br></span>
 		</div>
@@ -18,89 +22,42 @@
 		<div id="guideText">
 			$guide[2]
 
-            if(isset($_SESSION['id']))
-            {
-                $requeteHasVoted = $bdd->prepare('SELECT hasVoted FROM votesByUser WHERE idGuide=? AND idUser=?');
-                $requeteHasVoted->execute(array($item['Id_Guide'],$_SESSION['id']));
-                $resultVoteUser = $requeteHasVoted->fetch();
-                if(!isset($resultVoteUser['hasVoted']))
-                {
-                    $create=true;
-                }
-                $requeteHasVoted->closeCursor();
-            }
-            ?>
-        <div id="votes">
-            <?php
-            if(isset($_SESSION['id']))
-            {
-                ?>
-                <a style="color:black;text-align:center;" href="index.vm?Id_Guide=<?php echo $g ?>&votes=like" ><img src="../../img/up.png"></a>
-            <?php
-            }
-            else
-            {
-                echo("<img src='../../img/up.png'>");
-            }
-            if(isset($_GET['votes']) && isset($_SESSION['id'])){
-                if($_GET['votes']=='dislike' && !isset($create)){
-                 $requetSubVote = $bdd->prepare('UPDATE votes SET nbDown = nbDown+1 WHERE idGuide =
-                (SELECT idGuide FROM votesByUser WHERE idGuide= ? AND idUser = ? AND hasVoted=0);
-                UPDATE votesbyuser SET hasvoted=1 WHERE idUser = ? AND idGuide = ? AND hasVoted=0; ');
-                    $requetSubVote->execute(array($g, $_SESSION['id'],$_SESSION['id'],$g ));
-                }
+            #set($hasUserVoted = $SQL.hasUserVoted($guide[0], $userId))
+            #set($create = false)
+            #if($hasUserVoted.next())
+                set($create = true)
+            #end
 
-                else if($_GET['votes']=='like' && !isset($create)  && isset($_SESSION['id'])){
-                    $requetSubVote = $bdd->prepare('UPDATE votes SET nbUp = nbUp+1 WHERE idGuide =
-                (SELECT idGuide FROM votesByUser WHERE idGuide= ? AND idUser = ? AND hasVoted=0);
-                UPDATE votesbyuser SET hasvoted=1 WHERE idUser = ? AND idGuide = ? AND hasVoted=0; ');
-                    $requetSubVote->execute(array($g, $_SESSION['id'],$_SESSION['id'],$g ));
-                }
+            #if($votes && $userId)
+                #if($votes == "like" && !$create)
+                    $SQL.voteForUserGuideByUpdate($guide[0], $userId, 1, 0)
+                #elseif($votes == "like" && $create)
+                    $SQL.voteForUserGuideByCreate($guide[0], $userId, 1, 0)
+                #elseif($votes == "dislike" && !$create)
+                    $SQL.voteForUserGuideByUpdate($guide[0], $userId, 0, 1)
+                #elseif($votes == "dislike" && $create)
+                    $SQL.voteForUserGuideByCreate($guide[0], $userId, 0, 1)
+                #end
+            #end
 
-                else if($_GET['votes']=='dislike' && $create==true  && isset($_SESSION['id'])){
-                    $requetSubVote = $bdd->prepare("INSERT INTO `planmytrip`.`votesbyuser` (`id`,`idUser`, `idGuide`, `hasVoted`) VALUES (?,?,?,?);
-                                                    UPDATE votes SET nbDown = nbDown+1 WHERE idGuide =
-                                                    (SELECT idGuide FROM votesByUser WHERE idGuide= ? AND idUser = ? AND hasVoted=1);");
+            #set($nbUp = $SQL.getNbLike(15))
+            #set($nbDown = $SQL.getNbDislike(15))
+            <div id="votes">
+                #if($userId)
+                    <a style="color:black;text-align:center;" href="$baseUrl/pages/guide/index.html?Id_Guide=$guide[0]&votes=like" ><img src="$baseUrl/img/up.png"></a>
+                    <span style="color:green;">$nbUp</span>
+                    <a style="color:black" href="$baseUrl/pages/guide/index.html?Id_Guide=$guide[0]&votes=dislike"><img src="$baseUrl/img/down.png"></a>
+                    <span style="color:red;text-align:center;">$nbDown</span>
 
-                    $requetSubVote->execute(array(NULL,$_SESSION['id'],$g,1,$g,$_SESSION['id']));
-
-                }
-                else if($_GET['votes']=='like' && $create==true  && isset($_SESSION['id'])){
-
-
-                    $requetSubVote = $bdd->prepare("INSERT INTO `planmytrip`.`votesbyuser` (`id`, `idUser`, `idGuide`, `hasVoted`) VALUES (?,?,?,?);
-                                                    UPDATE votes SET nbUp = nbUp+1 WHERE idGuide =
-                                                    (SELECT idGuide FROM votesByUser WHERE idGuide= ? AND idUser = ? AND hasVoted=1);");
-                    $requetSubVote->execute(array(NULL,$_SESSION['id'],$g,1,$g,$_SESSION['id']));
-                }
-                $requetSubVote->closeCursor();
-
-
-            }
-            $requeteLikes = $bdd->prepare('SELECT nbUp,nbDown FROM votes WHERE idGuide =?');
-            $requeteLikes->execute(array(intval($item['Id_Guide'])));
-            while($likes = $requeteLikes->fetch()){
-            	?>
-            	<span style="color:green;">$guide[7]</span>
-                <?php
-                if(isset($_SESSION['id']))
-                {
-
-                    ?>
-                    <a style="color:black" href="index.html?Id_Guide=<?php echo $g ?>&votes=dislike"><img src="../../img/down.png"></a>
-                    <?php
-
-
-                }
-                else
-                {
-                    echo("<img src='../../img/down.png'>");
-                }
-                ?>
-            	<span style="color:red;text-align:center;">$guide[6]</span>
+                #else
+                    <img src='$baseUrl/img/up.png'>
+                    <span style="color:green;">$nbUp</span>
+                    <img src='$baseUrl/img/down.png'>
+                    <span style="color:red;text-align:center;">$nbDown</span>
+                #end
+            </div>
         </div>
     </div>
-		<div id="pub2"></div>
-	</div>
 #end
+		<div id="pub2"></div>
 #include("footer.vm")

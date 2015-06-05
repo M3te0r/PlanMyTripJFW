@@ -1,5 +1,6 @@
 package PlanMyTrip.database;
 
+import java.net.URI;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -192,6 +193,64 @@ public class MySQLAccess {
 
     }
 
+    public static void voteForUserGuideByUpdate(int idGuide, int idUser, int up, int down) throws SQLException
+    {
+        PreparedStatement statement = getInstance().connection.prepareStatement("UPDATE votes SET nbDown = nbDown+?, nbUp = nbUp+? WHERE idGuide = " +
+                "(SELECT idGuide FROM votesByUser WHERE idGuide= ? AND idUser = ? AND hasVoted=0);" +
+                " UPDATE votesbyuser SET hasvoted=1 WHERE idUser = ? AND idGuide = ? AND hasVoted=0;");
+        statement.setInt(1, down);
+        statement.setInt(2, up);
+        statement.setInt(3, idGuide);
+        statement.setInt(4, idUser);
+        statement.setInt(5, idUser);
+        statement.setInt(6, idGuide);
+        statement.executeUpdate();
+    }
+
+    public static void voteForUserGuideByCreate(int idGuide, int idUser, int up, int down) throws SQLException
+    {
+        PreparedStatement statement = getInstance().connection.prepareStatement(("INSERT INTO votesbyuser (id,idUser, idGuide, hasVoted) VALUES (?,?,?,?);" +
+                "UPDATE votes SET nbDown = nbDown+ ?, nbUp=nbUp+ ? WHERE idGuide = (SELECT idGuide FROM votesByUser WHERE idGuide = ? AND idUser = ? AND hasVoted=1)"));
+
+        statement.setNull(1, Types.NULL);
+        statement.setInt(2, idUser);
+        statement.setInt(3, idGuide);
+        statement.setInt(4, 1);
+        statement.setInt(5, down);
+        statement.setInt(6, up);
+        statement.setInt(7, idGuide);
+        statement.setInt(8, idUser);
+        statement.executeUpdate();
+    }
+
+    public static int getNbLike(int idGuide) throws SQLException
+    {
+        PreparedStatement statement = getInstance().connection.prepareStatement("SELECT SUM(nbUP) as total FROM votes WHERE idGuide = ?");
+
+        statement.setInt(1, idGuide);
+        ResultSet result = statement.executeQuery();
+        if(result.next())
+            return result.getInt("total");
+        else
+            return 0;
+    }
+
+    public static int getNbDislike(int idGuide) throws SQLException
+    {
+        PreparedStatement statement = getInstance().connection.prepareStatement("SELECT SUM(nbDown) as total FROM votes WHERE idGuide = ?");
+
+        statement.setInt(1, idGuide);
+        ResultSet result = statement.executeQuery();
+        if(result.next())
+            return result.getInt("total");
+        else
+            return 0;
+    }
+
+    public static String getBaseUrl()
+    {
+        return "http://localhost:8080/PlanMyTrip";
+    }
 
 
     private static MySQLAccess getInstance(){

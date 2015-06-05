@@ -68,6 +68,8 @@ public class ActionGuide implements IAction {
         ve.init();
         VelocityContext pageContext = new VelocityContext();
         int id_guide = Integer.parseInt(((Context) context).getParameterUnique("Id_Guide"));
+        String votes = ((Context)context).getParameterUnique("votes");
+        pageContext.put("votes", votes);
         pageContext.put("Id_Guide", id_guide);
         String search = ((Context) context ).getParameterUnique("search");
         String duration = ((Context) context).getParameterUnique("duration");
