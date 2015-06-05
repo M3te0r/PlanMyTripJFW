@@ -55,7 +55,7 @@ public class ActionIndex implements IAction {
         try {
             context._getResponse().getWriter().write(writer.toString());
         } catch (IOException e) {
-            System.out.println("Erreur lors de l'écriture sur la Page Web Chapitre");
+            System.out.println("Erreur lors de l'écriture sur la Page Web");
             e.printStackTrace();
         }
 

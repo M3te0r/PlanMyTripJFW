@@ -10,8 +10,6 @@
     <title>PlanMyTrip</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
-    <link rel="icon" href="/favicon.ico" />
-
     <link rel="stylesheet" href="/PlanMyTrip/css/normalize.min.css">
     <link rel="stylesheet" href="/PlanMyTrip/css/main.css">
 </head>
@@ -20,7 +18,7 @@
 <body>
 <div id="top">
     <div id="topbar">
-        <a href="./"><div id="title">
+        <a href="/PlanMyTrip/index.html"><div id="title">
             <h1>PlanMyTrip</h1>
         </div></a>
                 <!--<div id="menu">
@@ -40,7 +38,7 @@
         <div id="login">
             #if($userIdRef && $userPseudoRef)
                 <div id="loged">
-                    <span id="nameLoged">Bonjour $userPseudoRef<span class="account"> <a href="/PlanMyTrip/pages/user/account/index.html">Mon compte <img style="margin-left:10px;width:15px;height:15px;margin-top:-5px;" src="/img/iconmonstr-user-6-icon-24.png"></span></a></span>
+                    <span id="nameLoged">Bonjour $userPseudoRef<span class="account"> <a href="/PlanMyTrip/pages/user/account/index.html">Mon compte <img style="margin-left:10px;width:15px;height:15px;margin-top:-5px;" src="/PlanMyTrip/img/iconmonstr-user-6-icon-24.png"></span></a></span>
                     <a href="/PlanMyTrip/pages/loger/logout.html" style="color:red;padding-left:5px;"> Deconnexion </a>
                 </div>
             #else

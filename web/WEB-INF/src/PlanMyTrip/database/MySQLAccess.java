@@ -1,6 +1,5 @@
 package PlanMyTrip.database;
 
-import java.net.URI;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -275,9 +274,19 @@ public class MySQLAccess {
             return 0;
     }
 
+    public static int updateUserInfo(String fullName, String newPassword, String oldPassword, int userId) throws SQLException
+    {
+        PreparedStatement statement = getInstance().connection.prepareStatement("UPDATE User SET FullName = ?, Password = ? WHERE Id_User = ? AND Password = ?");
+        statement.setString(1, fullName);
+        statement.setString(2, newPassword);
+        statement.setInt(3, userId);
+        statement.setString(4, oldPassword);
+        return statement.executeUpdate();
+    }
+
     public static String getBaseUrl()
     {
-        return "http://localhost:8080/PlanMyTrip";
+        return "http://localhost:8081/PlanMyTrip";
     }
 
 
@@ -288,4 +297,6 @@ public class MySQLAccess {
         }
         return self;
     }
+
+
 }

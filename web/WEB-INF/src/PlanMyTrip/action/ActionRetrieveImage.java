@@ -5,6 +5,7 @@ import org.esgi.web.framework.action.interfaces.IAction;
 import org.esgi.web.framework.context.interfaces.IContext;
 
 import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -53,9 +54,12 @@ public class ActionRetrieveImage implements IAction {
                 File resourceFile = new File(resourcePath);
                 if(resourceFile.exists())
                 {
-                    try {
+                    try{
                         BufferedImage bufferedImage = ImageIO.read(resourceFile);
-                        ImageIO.write(bufferedImage, resourceFile.getName().substring(resourceFile.getName().lastIndexOf(".") + 1), iContext._getResponse().getOutputStream());
+                        ServletOutputStream outputStream = iContext._getResponse().getOutputStream();
+
+                        ImageIO.write(bufferedImage, resourceFile.getName().substring(resourceFile.getName().lastIndexOf(".") + 1), outputStream);
+                        outputStream.close();
 
                     }catch (IOException io)
                     {
@@ -63,7 +67,5 @@ public class ActionRetrieveImage implements IAction {
                     }
                 }
             }
-
     }
-
 }
